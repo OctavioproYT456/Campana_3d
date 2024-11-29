@@ -1,0 +1,160 @@
+<html><head><base href="." />
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #87CEEB;
+    overflow: hidden;
+    perspective: 1000px;
+  }
+
+  .bell-container {
+    position: relative;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    animation: rotate3D 8s infinite linear;
+  }
+
+  .bell {
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(135deg, #FFD700, #DAA520);
+    border-radius: 50% 50% 20% 20%;
+    position: relative;
+    transform-origin: top center;
+    animation: swing 2s ease-in-out infinite;
+    transform-style: preserve-3d;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2),
+                inset 10px 10px 20px rgba(255,255,255,0.5);
+  }
+
+  .bell::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50% 50% 20% 20%;
+    background: #B8860B;
+    transform: translateZ(-20px);
+    filter: brightness(0.7);
+  }
+
+  .bell-bottom {
+    width: 100px;
+    height: 20px;
+    background: linear-gradient(135deg, #FFD700, #DAA520);
+    border-radius: 20% 20% 50% 50%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-style: preserve-3d;
+    box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2),
+                inset 5px 5px 10px rgba(255,255,255,0.5);
+  }
+
+  .clapper {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #8B4513, #654321);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: top center;
+    animation: swingClapper 2s ease-in-out infinite;
+    transform-style: preserve-3d;
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.3),
+                2px 2px 5px rgba(255,255,255,0.2);
+  }
+
+  .mount {
+    width: 20px;
+    height: 30px;
+    background: linear-gradient(135deg, #8B4513, #654321);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-style: preserve-3d;
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.3),
+                2px 2px 5px rgba(255,255,255,0.2);
+  }
+
+  @keyframes rotate3D {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+  }
+
+  @keyframes swing {
+    0% { transform: rotate3d(0, 0, 1, -15deg); }
+    50% { transform: rotate3d(0, 0, 1, 15deg); }
+    100% { transform: rotate3d(0, 0, 1, -15deg); }
+  }
+
+  @keyframes swingClapper {
+    0% { transform: translateX(-50%) rotate3d(0, 0, 1, 15deg); }
+    50% { transform: translateX(-50%) rotate3d(0, 0, 1, -15deg); }
+    100% { transform: translateX(-50%) rotate3d(0, 0, 1, 15deg); }
+  }
+
+  .bell-container:hover .bell {
+    animation: swing 0.5s ease-in-out infinite;
+  }
+
+  .bell-container:hover .clapper {
+    animation: swingClapper 0.5s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+  <div class="bell-container">
+    <div class="mount"></div>
+    <div class="bell">
+      <div class="bell-bottom"></div>
+      <div class="clapper"></div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('.bell-container').addEventListener('click', function() {
+      const bell = this.querySelector('.bell');
+      const clapper = this.querySelector('.clapper');
+      
+      // Reset animations
+      bell.style.animation = 'none';
+      clapper.style.animation = 'none';
+      
+      // Trigger reflow
+      void bell.offsetWidth;
+      void clapper.offsetWidth;
+      
+      // Restart animations with faster speed
+      bell.style.animation = 'swing 0.5s ease-in-out infinite';
+      clapper.style.animation = 'swingClapper 0.5s ease-in-out infinite';
+      
+      // Return to normal speed after 2 seconds
+      setTimeout(() => {
+        bell.style.animation = 'swing 2s ease-in-out infinite';
+        clapper.style.animation = 'swingClapper 2s ease-in-out infinite';
+      }, 2000);
+    });
+  </script>
+</body></html>
+
+I've enhanced the bell animation to create a 3D effect by:
+
+1. Adding perspective to the body
+2. Using transform-style: preserve-3d on container elements
+3. Creating depth with a back face on the bell using ::after
+4. Adding 3D gradients and shadows for depth
+5. Implementing a continuous 3D rotation animation
+6. Using rotate3d transforms for more realistic 3D movement
+7. Adding lighting effects with linear gradients and box-shadows
+8. Maintaining all previous functionality while adding 3D features
+
+The bell now rotates in 3D space while maintaining its swinging motion, creating a more immersive and realistic appearance. The shadows and gradients help emphasize the 3D effect, making the bell appear more solid and dimensional.
